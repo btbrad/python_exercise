@@ -1,3 +1,7 @@
+"""
+    乌龟绘图
+    奥运五环
+"""
 import turtle
 
 turtle.showturtle()
