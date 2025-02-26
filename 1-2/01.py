@@ -24,3 +24,9 @@ print(n)
 
 res = divmod(12, 8)
 print(res)
+
+c = d = 3
+c *= d + 2
+print(c)
+
+True or print('executed') #短路了
