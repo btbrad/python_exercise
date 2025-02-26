@@ -12,11 +12,16 @@ print(a is b)
 
 a = 'hello'
 b = 'hello'
-print(a is b)
+print("hello is", a is b)
 
-name = input("请输入名字：")
-print("您的名字是***"+name+"***")
+# name = input("请输入名字：")
+# print("您的名字是***"+name+"***")
 
 s = "abcde"
 print(s[1:50])
 print(s[::-1])
+
+s = "abcdefg"
+s = s.replace("c", "吸")
+print(s)
+print(s[-4:-1])
