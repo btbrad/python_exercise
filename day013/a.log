@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "D:\code\python_exercise\day013\04.py", line 5, in <module>
+    num = 1 / 0
+ZeroDivisionError: division by zero
