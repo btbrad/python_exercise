@@ -5,6 +5,12 @@ from vsearch import search4letters
 app = Flask(__name__)
 
 def log_request(req: 'flask_request', res: str)->None:
+    dbconfig = {
+        'host': '127.0.0.1',
+        'user': 'vsearch',
+        'password': '123456',
+        'database': 'vsearchlogDB'
+    }
     with open('vsearch.log', 'a') as f:
         print(req.form, req.remote_addr, req.user_agent, res, file=f, sep='|')
 
