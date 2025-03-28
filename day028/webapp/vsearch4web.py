@@ -1,24 +1,39 @@
 from flask import Flask, render_template, request
 from markupsafe import escape
 from vsearch import search4letters
+import mysql.connector
 
 app = Flask(__name__)
 
 def log_request(req: 'flask_request', res: str)->None:
-    dbconfig = {
-        'host': '127.0.0.1',
-        'user': 'vsearch',
-        'password': '123456',
-        'database': 'vsearchlogDB'
-    }
-    with open('vsearch.log', 'a') as f:
-        print(req.form, req.remote_addr, req.user_agent, res, file=f, sep='|')
+    try:
+        dbconfig = {
+            'host': '127.0.0.1',
+            'user': 'root',
+            'password': '123456',
+            'database': 'vsearchlogdb'
+        }
+        conn = mysql.connector.connect(**dbconfig)
+        cursor = conn.cursor()
+        _SQL = """insert into log
+                  (phrase, letters, ip, browser_string, results)
+                  values
+                  (%s, %s, %s, %s, %s)"""
+        cursor.execute(_SQL, (req.form['phrase'], req.form['letters'], req.remote_addr, req.user_agent.browser, res,))
+        conn.commit()
+        cursor.close()
+        conn.close()
+    except BaseException as e:
+        print(e)
+    # with open('vsearch.log', 'a') as f:
+    #     print(req.form, req.remote_addr, req.user_agent, res, file=f, sep='|')
 
 @app.route('/search4', methods=['POST'])
 def do_search() -> 'html':
     phrase = request.form['phrase']
     letters = request.form['letters']
     results = str(search4letters(phrase, letters))
+    print(results)
     log_request(request, results)
     return render_template('results.html', the_title='Here are your results', the_phrase=phrase, the_letters=letters, the_results=results)
 
