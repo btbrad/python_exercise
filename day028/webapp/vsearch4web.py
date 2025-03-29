@@ -19,7 +19,7 @@ def log_request(req: 'flask_request', res: str)->None:
                   (phrase, letters, ip, browser_string, results)
                   values
                   (%s, %s, %s, %s, %s)"""
-        cursor.execute(_SQL, (req.form['phrase'], req.form['letters'], req.remote_addr, req.user_agent.browser, res,))
+        cursor.execute(_SQL, (req.form['phrase'], req.form['letters'], req.remote_addr, 'chrome', res,))
         conn.commit()
         cursor.close()
         conn.close()
