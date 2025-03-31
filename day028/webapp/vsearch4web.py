@@ -7,9 +7,9 @@ app = Flask(__name__)
 
 def log_request(req: 'flask_request', res: str)->None:
     dbconfig = {
-        'host': '192.168.66.100',
+        'host': '127.0.0.1',
         'user': 'root',
-        'password': '123456',
+        'password': 'rootpassword',
         'database': 'vsearchlogdb'
     }
     conn = mysql.connector.connect(**dbconfig)
