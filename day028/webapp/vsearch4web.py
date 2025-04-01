@@ -1,29 +1,26 @@
 from flask import Flask, render_template, request
 from markupsafe import escape
 from vsearch import search4letters
-import mysql.connector
+from DBcm import UseDataBase
 
 app = Flask(__name__)
 
-def log_request(req: 'flask_request', res: str)->None:
-    dbconfig = {
-        'host': '127.0.0.1',
-        'user': 'root',
-        'password': 'rootpassword',
-        'database': 'vsearchlogdb'
-    }
-    conn = mysql.connector.connect(**dbconfig)
-    cursor = conn.cursor()
-    _SQL = """insert into log
+app.config['dbconfig'] = {
+    'host': '127.0.0.1',
+    'user': 'root',
+    'password': 'rootpassword',
+    'database': 'vsearchlogdb'
+}
+
+
+def log_request(req: 'flask_request', res: str) -> None:
+    with UseDataBase(app.config['dbconfig']) as cursor:
+        _SQL = """insert into log
                       (phrase, letters, ip, browser_string, results)
                       values
                       (%s, %s, %s, %s, %s)"""
-    cursor.execute(_SQL, (req.form['phrase'], req.form['letters'], req.remote_addr, 'chrome', res,))
-    conn.commit()
-    cursor.close()
-    conn.close()
-    # with open('vsearch.log', 'a') as f:
-    #     print(req.form, req.remote_addr, req.user_agent, res, file=f, sep='|')
+        cursor.execute(_SQL, (req.form['phrase'], req.form['letters'], req.remote_addr, req.user_agent, res,))
+
 
 @app.route('/search4', methods=['POST'])
 def do_search() -> 'html':
@@ -31,15 +28,18 @@ def do_search() -> 'html':
     letters = request.form['letters']
     results = str(search4letters(phrase, letters))
     log_request(request, results)
-    return render_template('results.html', the_title='Here are your results', the_phrase=phrase, the_letters=letters, the_results=results)
+    return render_template('results.html', the_title='Here are your results', the_phrase=phrase, the_letters=letters,
+                           the_results=results)
+
 
 @app.route('/')
 @app.route('/entry')
 def entry_page() -> 'html':
     return render_template('entry.html', the_title='Welcome to search4letters on the web!')
 
+
 @app.route('/viewlog')
-def view_the_log()-> str:
+def view_the_log() -> str:
     contents = []
     with open('vsearch.log') as log:
         for line in log:

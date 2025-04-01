@@ -1,8 +1,16 @@
 import mysql.connector
 
+config = {
+    'host': '127.0.0.1',
+    'user': 'root',
+    'password': 'rootpassword',
+    'database': 'vsearchlogdb'
+}
+
+
 class UseDataBase:
 
-    def __int__(self, config: dict) -> None:
+    def __int__(self) -> None:
         self.configuration = config
 
     def __enter__(self) -> 'cursor':
@@ -14,3 +22,14 @@ class UseDataBase:
         self.conn.commit()
         self.cursor.close()
         self.conn.close()
+
+
+if __name__ == '__main__':
+    config = {
+        'host': '127.0.0.1',
+        'user': 'root',
+        'password': 'rootpassword',
+        'database': 'vsearchlogdb'
+    }
+    with UseDataBase() as cursor:
+        print(cursor)

@@ -1,5 +1,6 @@
 import mysql.connector
 
+
 class UseDataBase:
 
     def __int__(self, config: dict) -> None:
