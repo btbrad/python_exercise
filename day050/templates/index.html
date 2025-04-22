@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模版</title>
+</head>
+<body>
+    
+    <h1>Hello Flask</h1>
+    <div>{{ info }}</div>
+    <hr>
+    {{ name }}--{{ age }}--{{ gender }}
+    <hr>
+    <a href="{{ url_for('user', id=10) }}">访问user</a>
+    <hr>
+    <p>过滤器</p>
+    <p>原数据: {{ param }}</p>
+    <p>过滤后原数据: {{ param | int }}</p>
+</body>
+</html>
