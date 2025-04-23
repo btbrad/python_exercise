@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>流程控制</p>
+    {% if username == 'zs' %}
+        <p>张三</p>
+    {% elif username == 'ls' %}
+        <p>李四</p>
+    {% else %}
+        <p>王五</p>        
+    {% endif %}
+    <hr>
+    {% for item in items %}
+        <p>{{ item }}--{{ loop.index0 }}</p>
+    {% endfor %}
+    <hr>
+    {% for k,v in info.items() %}
+        <p>{{ k }}--{{ v }}</p>
+    {% endfor %}
+    <hr>
+    {% macro inp(type, name, value, placeholder) %}
+        <input type="{{ type}}" name="{{ name }}" value="{{ value}}" placeholder="{{  placeholder }}" />
+    {% endmacro %}
+    <p>{{ inp('text', 'username', '', '请输入用户名') }}</p>
+    <p>{{ inp('password', 'password', '', '请输入密码') }}</p>
+    <p>{{ inp('button', '', '登录', '') }}</p>
+
+    {% set slogan='没有蛀牙' %}
+    <p>口号：{{ slogan }}</p>
+
+    {% with greeting='你好' %}
+        <p>{{ greeting }}</p>
+    {% endwith %}
+
+    {% include 'common/footer.html' %}
+
+</body>
+</html>
