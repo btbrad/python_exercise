@@ -36,9 +36,9 @@ def add_data():
 
 def query_data():
     with Session() as session:
-        user = session.query(User).first()
-        print(user)
-        print(user.login_user)
+        login = session.query(LoginUser).first()
+        print(login)
+        print(login.user)
 
 
 if __name__ == '__main__':
