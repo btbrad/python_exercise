@@ -1,18 +1,33 @@
-from sqlalchemy import create_engine
+from flask import Flask, session, request
 
-HOST = 'localhost'
-PORT = '3306'
-DATABASE = 'flask_db'
-USERNAME = 'root'
-PASSWORD = '123456'
-DB_URI = f'mysql+pymysql://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}'
+app = Flask(__name__)
 
-engine = create_engine(DB_URI)
+app.secret_key = 'secret'
+@app.before_request
+def before_request():
+  url = request.path
+  print(url)
+  if url in ['/login/']:
+    pass
+  else:
+    if session.get('isLogin'):
+      pass
+    else:
+      return '请登录'
 
-# 执行一个sql
-with engine.connect() as conn:
-    sql = 'select 1'
-    rs = conn.execute(sql)
-    print(rs.fetchone())
-    # sql = 'create table t_user(id int primary key auto_increment, name varchar(32))'
-    # conn.execute(sql)
+@app.route('/login/')
+def login():
+  session['isLogin'] = True
+  return '登录成功！'
+
+@app.route('/logout/')
+def logout():
+  session['isLogin'] = False
+  return '退出登录！'
+
+@app.route('/')
+def index():
+  return 'Hello Flask !'
+
+if __name__ == '__main__':
+  app.run(debug=True)
