@@ -16,3 +16,8 @@ print(list(square_list))
 
 list2 = list(map(lambda x: x * x, filter(lambda x: x % 2 == 0, list1)))
 print(list(list2))
+
+from functools import reduce
+
+res = reduce(lambda x, y: x + y, [1, 2, 3, 4])
+print(res)
